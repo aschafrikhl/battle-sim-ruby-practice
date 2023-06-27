@@ -1,85 +1,172 @@
 module Utils
-    class LinkedList
-        def initialize
+    class DoublyLinkedList
+        attr_accessor :head, :tail, :length
+
+        def initialize()
             @head = nil
+            @tail = nil
+            @length = 0
         end
 
-        def append(value)
-            if @head
-                find_tail.next = Node.new(value)
+        def push(val)
+            new_node = Node.new(val)
+            if @length == 0
+                @head = new_node
+                @tail = new_node
+            else 
+                @tail.next = new_node
+                new_node.prev = @tail
+                @tail = new_node
+            end
+            @length += 1
+            return self
+        end
+
+        def pop
+            return nil if !@head
+
+            old_tail = @tail
+            if @length == 1
+                @head = nil
+                @tail = nil
+            else 
+                @tail = old_tail.prev
+                @tail.next = nil
+                old_tail.prev = nil
+            end
+            @length -= 1
+
+            return old_tail
+        end
+
+        def shift
+            return nil if !@head
+
+            old_head = @head
+            if @length == 1
+                @head = nil
+                @tail = nil
             else
-                @head = Node.new(value)
+                @head = old_head.next
+                @head.prev = nil
+                old_head.next = nil 
+            end
+            @length -= 1
+
+            return old_head
+        end
+
+        def unshift(val)
+            new_node = Node.new(val)
+            if @length == 0
+                @head = new_node
+                @tail = new_node
+            else 
+                @head.prev = new_node
+                new_node.next = @head
+                @head = new_node
+            end
+            @length += 1
+
+            return self
+        end
+
+        def get(index)
+            return nil if index < 0 || index >= @length
+            if index <= @length/2
+                i = 0
+                current = @head
+                while i < index do
+                    current = current.next
+                    i += 1
+                end
+            else 
+                i = @length - 1
+                current = @tail
+                while i > index do
+                    current =  current.prev
+                    i -= 1
+                end
+            end
+
+            return current
+        end
+
+        def set(index, val)
+            node = get(index)
+
+            if !!node
+                node.val = val
+                return true
+            else 
+                return false
             end
         end
 
-        def find_tail
+        def insert(index, val)
+            return false if index < 0 || index > @length
+            return !!unshift(val) if index == 0
+            return !!push(val) if index == @length
+
+            new_node = Node.new(val)
+            prev_node = get(index-1)
+            after_new_node = prev_node.next
+            new_node.prev = prev_node
+            new_node.next = after_new_node
+            prev_node.next = new_node
+            after_new_node.prev = new_node
+
+            @length += 1
+
+            return true
+        end
+
+        def remove(index)
+            return nil if index < 0 || index >= @length
+            return shift() if index == 0
+            return pop() if index == @length - 1
+
+            removed_node = get(index)
+            prev_node = removed_node.prev
+            next_node = removed_node.next
+            prev_node.next = next_node
+            next_node.prev = prev_node
+            removed_node.next = nil
+            removed_node.prev = nil
+
+            @length -= 1
+            return removed_node
+        end
+
+        def reverse
+            return self if @length < 2
+
             node = @head
+            @head = @tail
+            @tail = node
 
-            return node if !node.next
-            return node if !node.next while (node = node.next)
-        end
-
-        def append_after(target, value)
-            node = find(target)
-
-            return unless node
-
-            old_next = node.next
-            node.next  = Node.new(value)
-            node.next.next = old_next
-        end
-
-        def find(value)
-            node = @head
-            return false if !node.next
-            return node if node.value == value
-
-            while (node = node.next)
-                return node if node.value == value
-            end
-        end
-
-        def delete(value)
-            if @head.value == value
-                @head = @head.next
-                return
+            i = 0
+            while i < @length do
+                prev = node.next
+                node.next = node.prev
+                node.prev = prev
+                node = prev
+                i += 1
             end
 
-            node = find_before(value)
-            node.next = node.next.next
-        end
-
-        def find_before(value)
-            node = @head
-            return false if !node.next
-            return node if node.next.next.value == value
-
-            while (node = node.next)
-                return node if node.next && node.next.value == value
-            end
-        end
-
-        def print_nodes
-            node = @head
-            puts node
-            
-            while (node = node.next)
-                puts node
-            end
+            return self
         end
     end
 
     class Node
-        attr_accessor :next
+        attr_accessor :val, :next, :prev
         attr_reader :value
 
-        def initialize(value)
-            @value = value
+        def initialize(val)
+            @val = val
             @next = nil
-        end
-
-        def to_s
-            "Node with value: #{@value}"
+            @prev = nil
         end
     end
 end
+
