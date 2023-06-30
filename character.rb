@@ -6,7 +6,7 @@ module CharacterLibrary
     class Character < AttackLibrary::PlayerAttack
         @@total_charactors = 0
 
-        attr_reader :id, :name, :type, :element, :base_health, :current_health
+        attr_reader :id, :name, :type, :element, :base_health, :current_health, :defeated_monsters
 
         def initialize(name, type, element)
             super element
@@ -16,12 +16,13 @@ module CharacterLibrary
             @element = element
             @base_health = generate_base_health
             @current_health = @base_health
+            @defeated_monsters = 0
 
             @@total_charactors += 1
         end
 
         def generate_base_health
-            rand(10...20)
+            rand(20...50)
         end
 
         def add_health(amount)
@@ -34,6 +35,10 @@ module CharacterLibrary
             if @current_health < 1
                 puts "#{@name} has died game over"
             end
+        end
+
+        def defeat_monster
+            @defeated_monsters += 1
         end
 
         private

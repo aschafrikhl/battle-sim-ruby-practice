@@ -10,6 +10,7 @@ module BattleLibrary
             BattleLibrary.apply_health(character, rand_heal)
             character.reset_special_cd
 
+            character.defeat_monster
             puts "\nYou have been healed for #{rand_heal}"
         end
     end
