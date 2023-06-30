@@ -1,6 +1,11 @@
-module Map
-    Town = ['Center']
-    Mountain = ['Mountain Trail', 'Mountain Base', 'Mountain Side', 'Mountain Peak']
-    Volcano = ['Volcano Trail', 'Volcano Base', 'Volcano Side', 'Volcano Peak']
-    River = ['River Trail', 'River Base', 'River Side', 'River Peak']
+module MapLibrary
+    Map = {
+        'town' => ['Center'],
+        'mountain' => ['Mountain Trail', 'Mountain Base', 'Mountain Side', 'Mountain Peak'],
+        'volcano' => ['Volcano Trail', 'Volcano Base', 'Volcano Side', 'Volcano Peak'],
+        'river' => ['River Trail', 'River Base', 'River Side', 'River Peak'],
+        'forest' => ['Forest Trail', 'Forest Base', 'Forest Side', 'Forest Peak']
+    }
+
+    Areas = ['mountain', 'volcano', 'river', 'forest']
 end
