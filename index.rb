@@ -99,5 +99,3 @@ while go_exploring == "yes" do
 end
 
 puts "\nBattle Sim Ending"
-
-# this is a change
