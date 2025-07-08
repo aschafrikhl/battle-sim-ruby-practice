@@ -99,3 +99,4 @@ while go_exploring == "yes" do
 end
 
 puts "\nBattle Sim Ending"
+# need new commit
